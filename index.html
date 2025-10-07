@@ -267,7 +267,7 @@
         </div>
 
         <div style="text-align: center;">
-            <a href="#" class="cta-button">Save the Date! 🍁</a>
+            <button onclick="downloadCalendar()" class="cta-button" style="border: none; cursor: pointer;">Save the Date! 🍁</button>
         </div>
     </div>
 
@@ -289,6 +289,39 @@
     </footer>
 
     <script>
+        function downloadCalendar() {
+            const event = {
+                title: 'Stonehouse Fall Festival 2025',
+                start: '20251101T170000',
+                end: '20251101T200000',
+                description: 'Join us for the annual Stonehouse Fall Festival! Enjoy lawn games, food & drinks, fresh popcorn & apple cider, candy trade-in, music, and outdoor movie (Hotel Transylvania 2). Bring blankets/chairs, bug spray, and family!',
+                location: 'Laurel Grove Park, 9205 Six Mt Zion Rd, Toano, VA 23168'
+            };
+
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'PRODID:-//Stonehouse Social Committee//Fall Festival//EN',
+                'BEGIN:VEVENT',
+                `DTSTART:${event.start}`,
+                `DTEND:${event.end}`,
+                `SUMMARY:${event.title}`,
+                `DESCRIPTION:${event.description}`,
+                `LOCATION:${event.location}`,
+                'STATUS:CONFIRMED',
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\n');
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'stonehouse-fall-festival-2025.ics';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
         function createLeaf() {
             const leaf = document.createElement('div');
             leaf.className = 'leaf';
